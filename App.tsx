@@ -76,7 +76,7 @@ const App: React.FC = () => {
                         const audioBuffer = await decodeAudioData(data);
                         decodedAssets.set(key, audioBuffer);
                     } catch (audioErr) {
-                        console.error(`Failed to decode audio asset "${key}":`, audioErr);
+                        console.error(`Failed to decode audio  asset "${key}":`, audioErr);
                     }
                 }
                 setAudioAssets(decodedAssets);
