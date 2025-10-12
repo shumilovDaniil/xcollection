@@ -8,7 +8,7 @@ export const FIXER_DISTRICTS: FixerDistrict[] = [
         imageUrl: 'https://i.imgur.com/gK2bYp8.jpeg',
         hpRange: [100, 500],
         rewardRange: [5, 20],
-        stunChance: 0.15, // 15% chance
+        dataChipRange: [1, 5],
     },
     {
         id: 'pacifica',
@@ -17,7 +17,7 @@ export const FIXER_DISTRICTS: FixerDistrict[] = [
         imageUrl: 'https://i.imgur.com/h5vYp5E.jpeg',
         hpRange: [1000, 5000],
         rewardRange: [25, 100],
-        stunChance: 0.30, // 30% chance
+        dataChipRange: [3, 10],
         unlockRequirement: {
             districtId: 'watson',
             kills: 100,
@@ -30,7 +30,7 @@ export const FIXER_DISTRICTS: FixerDistrict[] = [
         imageUrl: 'https://i.imgur.com/Tq9Y6ZJ.jpeg',
         hpRange: [10000, 50000],
         rewardRange: [150, 600],
-        stunChance: 0.50, // 50% chance
+        dataChipRange: [10, 25],
         unlockRequirement: {
             districtId: 'pacifica',
             kills: 250,

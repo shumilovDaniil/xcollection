@@ -9,14 +9,15 @@ interface CraftingPageProps {
 }
 
 const CraftingPage: React.FC<CraftingPageProps> = ({ cards, onCraft }) => {
-  const groupedCards = cards.reduce((acc, card) => {
+  // FIX: Use a generic on `reduce` to ensure correct type inference for `groupedCards`, which fixes the `unknown` type issue downstream.
+  const groupedCards = cards.reduce<Record<number, { card: PlayerCard; count: number }>>((acc, card) => {
     if (card.rarity === Rarity.Legendary) return acc; // Cannot craft from max rarity
     if (!acc[card.id]) {
       acc[card.id] = { card: card, count: 0 };
     }
     acc[card.id].count++;
     return acc;
-  }, {} as { [key: number]: { card: PlayerCard; count: number } });
+  }, {});
 
   const craftableCards = Object.values(groupedCards).filter(group => group.count >= 5);
   const nextRarity = (rarity: Rarity) => {

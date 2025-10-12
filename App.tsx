@@ -17,6 +17,7 @@ import { AudioContext } from './context/AudioContext';
 import { UiContext } from './context/UiContext';
 import { decodeAudioData } from './utils/audio';
 import CheatMenu from './components/CheatMenu';
+import AiAssistant from './components/AiAssistant';
 
 const pageToBackgroundKeyMap: { [key in Page]: string } = {
     [Page.Collection]: 'collection',
@@ -32,7 +33,7 @@ const pageToBackgroundKeyMap: { [key in Page]: string } = {
 const App: React.FC = () => {
     const [currentPage, setCurrentPage] = useState<Page>(Page.Collection);
     const [playerCards, setPlayerCards] = useState<PlayerCard[]>([]);
-    const [playerCurrencies, setPlayerCurrencies] = useState<PlayerCurrencies>({ eddies: 0, lustGems: 0 });
+    const [playerCurrencies, setPlayerCurrencies] = useState<PlayerCurrencies>({ eddies: 0, lustGems: 0, dataChips: 0 });
     const [allGameCards, setAllGameCards] = useState<Card[]>([]);
     const [fixerProgress, setFixerProgress] = useState<FixerProgress>({});
     const [cardCooldowns, setCardCooldowns] = useState<CardCooldowns>({});
@@ -314,6 +315,7 @@ const App: React.FC = () => {
                             setCurrentPage={setCurrentPage}
                             eddies={playerCurrencies.eddies}
                             lustGems={playerCurrencies.lustGems}
+                            dataChips={playerCurrencies.dataChips}
                         />
                         <main className="p-4 md:p-8">
                             {renderPage()}
@@ -324,6 +326,7 @@ const App: React.FC = () => {
                                 {modalContent}
                             </Modal>
                         )}
+                        <AiAssistant />
                     </div>
                 </UiContext.Provider>
             </AudioContext.Provider>

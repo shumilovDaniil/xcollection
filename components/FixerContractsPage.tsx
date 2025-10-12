@@ -4,7 +4,7 @@ import { FIXER_DISTRICTS } from '../constants';
 import * as db from '../db';
 import RaidInterface from './RaidInterface';
 import CardComponent from './CardComponent';
-import { EddyIcon } from './IconComponents';
+import { EddyIcon, DataChipIcon } from './IconComponents';
 import Modal from './Modal';
 import { UiContext } from '../context/UiContext';
 
@@ -20,8 +20,8 @@ type RaidStage = 'district_selection' | 'team_selection' | 'in_raid';
 interface RaidSummary {
     districtId: string;
     kills: number;
-    earnings: number;
-    stunnedCardIds: string[];
+    earnings: { eddies: number, dataChips: number };
+    defeatedCardIds: string[];
     killStats: KillStats;
 }
 
@@ -74,18 +74,22 @@ const FixerContractsPage: React.FC<FixerContractsPageProps> = (props) => {
         setStage('team_selection');
     };
 
-    const handleShowRaidSummary = (districtId: string, kills: number, earnings: number, stunnedCardIds: string[], killStats: KillStats) => {
-        setRaidSummary({ districtId, kills, earnings, stunnedCardIds, killStats });
+    const handleShowRaidSummary = (districtId: string, kills: number, earnings: { eddies: number, dataChips: number }, defeatedCardIds: string[], killStats: KillStats) => {
+        setRaidSummary({ districtId, kills, earnings, defeatedCardIds, killStats });
         setStage('district_selection'); // Visually exit raid, modal will cover the screen
     };
 
     const handleCloseRaidSummary = async () => {
         if (!raidSummary) return;
 
-        const { districtId, kills, earnings, stunnedCardIds } = raidSummary;
+        const { districtId, kills, earnings, defeatedCardIds } = raidSummary;
 
         // Update currencies
-        const newCurrencies = { ...playerCurrencies, eddies: playerCurrencies.eddies + earnings };
+        const newCurrencies = { 
+            ...playerCurrencies, 
+            eddies: playerCurrencies.eddies + earnings.eddies,
+            dataChips: playerCurrencies.dataChips + earnings.dataChips,
+        };
         await db.updatePlayerCurrencies(newCurrencies);
         setPlayerCurrencies(newCurrencies);
 
@@ -98,11 +102,11 @@ const FixerContractsPage: React.FC<FixerContractsPageProps> = (props) => {
         await db.updateFixerProgress(newProgress);
         setFixerProgress(newProgress);
 
-        // Set cooldowns for stunned cards
+        // Set cooldowns for defeated cards
         const newCooldowns: CardCooldowns = { ...cardCooldowns };
         const cooldownDuration = 3 * 60 * 1000; // 3 minutes
         const now = Date.now();
-        stunnedCardIds.forEach(id => {
+        defeatedCardIds.forEach(id => {
             newCooldowns[id] = now + cooldownDuration;
         });
         await db.updateCardCooldowns(newCooldowns);
@@ -185,7 +189,7 @@ const FixerContractsPage: React.FC<FixerContractsPageProps> = (props) => {
                                     {isSelected && <div className="absolute inset-0 bg-black/70 flex items-center justify-center pointer-events-none"><div className="text-teal-400 text-6xl font-black">✓</div></div>}
                                     {isOnCooldown && (
                                         <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center text-center p-2">
-                                            <div className="text-lg font-bold text-red-500">Оглушена</div>
+                                            <div className="text-lg font-bold text-red-500">Повержена</div>
                                             <CooldownTimer endTime={cooldownEndTime} />
                                             <button onClick={() => handleRemoveCooldown(card)} className="mt-2 text-xs bg-[color:var(--brand-warning)] hover:brightness-110 text-white font-bold py-1 px-2 flex items-center">
                                                 <EddyIcon className="w-3 h-3 mr-1" /> 100
@@ -243,10 +247,6 @@ const FixerContractsPage: React.FC<FixerContractsPageProps> = (props) => {
                                             <span className="font-bold text-gray-400">Награда (Эдди):</span>
                                             <span className="font-mono text-[color:var(--brand-accent)]">{district.rewardRange[0]} - {district.rewardRange[1]}</span>
                                         </div>
-                                        <div className="flex justify-between items-center bg-black/20 p-2">
-                                            <span className="font-bold text-gray-400">Шанс оглушения:</span>
-                                            <span className="font-mono text-yellow-400">{(district.stunChance * 100).toFixed(0)}%</span>
-                                        </div>
                                     </div>
     
                                     {isUnlocked ? (
@@ -289,11 +289,21 @@ const FixerContractsPage: React.FC<FixerContractsPageProps> = (props) => {
                             <p className="text-lg text-gray-400">Всего Уничтожено Врагов</p>
                             <p className="text-4xl font-bold text-white">{raidSummary.kills}</p>
                         </div>
-                        <div className="bg-gray-800 p-4">
-                             <p className="text-lg text-gray-400">Всего Заработано Эдди</p>
-                            <div className="flex items-center justify-center text-4xl font-bold text-[color:var(--brand-accent)]">
-                                <EddyIcon className="w-8 h-8 mr-2"/>
-                                {raidSummary.earnings.toLocaleString()}
+
+                        <div className="grid grid-cols-2 gap-4">
+                             <div className="bg-gray-800 p-4">
+                                 <p className="text-lg text-gray-400">Заработано Эдди</p>
+                                <div className="flex items-center justify-center text-4xl font-bold text-[color:var(--brand-accent)]">
+                                    <EddyIcon className="w-8 h-8 mr-2"/>
+                                    {raidSummary.earnings.eddies.toLocaleString()}
+                                </div>
+                            </div>
+                            <div className="bg-gray-800 p-4">
+                                 <p className="text-lg text-gray-400">Собрано Чипов Данных</p>
+                                <div className="flex items-center justify-center text-4xl font-bold text-cyan-400">
+                                    <DataChipIcon className="w-8 h-8 mr-2"/>
+                                    {raidSummary.earnings.dataChips.toLocaleString()}
+                                </div>
                             </div>
                         </div>
 

@@ -1,15 +1,16 @@
 import React from 'react';
 import { Page } from '../types';
-import { EddyIcon, LustGemIcon } from './IconComponents';
+import { EddyIcon, LustGemIcon, DataChipIcon } from './IconComponents';
 
 interface HeaderProps {
   currentPage: Page;
   setCurrentPage: (page: Page) => void;
   eddies: number;
   lustGems: number;
+  dataChips: number;
 }
 
-const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, eddies, lustGems }) => {
+const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, eddies, lustGems, dataChips }) => {
   const navItems = Object.values(Page);
 
   return (
@@ -40,6 +41,10 @@ const Header: React.FC<HeaderProps> = ({ currentPage, setCurrentPage, eddies, lu
           <div className="flex items-center bg-[color:var(--brand-panel)]/50 px-4 py-2 border border-[color:var(--brand-accent)]/50">
             <EddyIcon className="w-6 h-6 mr-2 text-[color:var(--brand-accent)]" />
             <span className="font-bold text-[color:var(--brand-accent)] text-lg">{eddies.toLocaleString()}</span>
+          </div>
+          <div className="flex items-center bg-[color:var(--brand-panel)]/50 px-4 py-2 border border-cyan-400/80">
+            <DataChipIcon className="w-6 h-6 mr-2 text-cyan-400" />
+            <span className="font-bold text-cyan-300 text-lg">{dataChips.toLocaleString()}</span>
           </div>
           <div className="flex items-center bg-[color:var(--brand-panel)]/50 px-4 py-2 border border-[color:var(--brand-warning)]/80">
             <LustGemIcon className="w-6 h-6 mr-2 text-purple-400" />

@@ -43,6 +43,9 @@
       @keyframes damage-number { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
       .animate-damage-number { animation: damage-number 1s forwards; }
 
+      @keyframes heal-number { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(-100px) scale(1.5); opacity: 0; } }
+      .animate-heal-number { animation: heal-number 1s forwards; color: #4ade80; text-shadow: 0 0 5px #4ade80; }
+
       @keyframes hit-shake { 0%, 100% { transform: translate(0, 0) rotate(0); } 20% { transform: translate(-2px, 2px) rotate(-1deg); } 40% { transform: translate(2px, -2px) rotate(1deg); } 60% { transform: translate(-2px, -2px) rotate(1deg); } 80% { transform: translate(2px, 2px) rotate(-1deg); } }
       .animate-hit-shake { animation: hit-shake 0.2s ease-in-out; }
 
@@ -52,6 +55,25 @@
       @keyframes click-burst { 0% { transform: scale(0); opacity: 0.8; } 100% { transform: scale(1.5); opacity: 0; } }
       .animate-click-burst { animation: click-burst 0.3s ease-out forwards; }
       .text-shadow-none { text-shadow: none; }
+
+      @keyframes chip-spawn {
+        0% { transform: scale(0) translateY(0); opacity: 0; }
+        50% { transform: scale(1.2) translateY(-20px); opacity: 1; }
+        100% { transform: scale(1) translateY(0); opacity: 1; }
+      }
+      .animate-chip-spawn { animation: chip-spawn 0.4s ease-out forwards; }
+
+      @keyframes card-glow-heal-anim {
+        0%, 100% {
+            filter: drop-shadow(0 0 8px #4ade80);
+        }
+        50% {
+            filter: drop-shadow(0 0 16px #4ade80);
+        }
+      }
+      .card-glow-heal {
+          animation: card-glow-heal-anim 1.5s infinite;
+      }
     </style>
   <script type="importmap">
 {
@@ -59,7 +81,8 @@
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.1.1/",
     "react/": "https://aistudiocdn.com/react@^19.1.1/",
     "react": "https://aistudiocdn.com/react@^19.1.1",
-    "react-dom": "https://aistudiocdn.com/react-dom@^19.1.1"
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.1.1",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.24.0"
   }
 }
 </script>

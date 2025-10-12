@@ -1,3 +1,5 @@
+import React from 'react';
+
 export enum Rarity {
   Common = 'Обычная',
   Rare = 'Редкая',
@@ -8,6 +10,7 @@ export enum Rarity {
 export interface CardStats {
   strength: number;
   healing: number;
+  hp: number;
 }
 
 export type CardRole = 'attack' | 'support';
@@ -32,6 +35,7 @@ export interface PlayerCard extends Card {
 export interface PlayerCurrencies {
   eddies: number;
   lustGems: number;
+  dataChips: number;
 }
 
 export interface PlayerState {
@@ -73,8 +77,8 @@ export interface FixerDistrict {
   description: string;
   imageUrl: string;
   hpRange: [number, number];
-  rewardRange: [number, number];
-  stunChance: number; // Probability (0 to 1) of a card getting stunned
+  rewardRange: [number, number]; // eddies
+  dataChipRange: [number, number]; // data chips per kill
   unlockRequirement?: {
     districtId: string;
     kills: number;
@@ -102,7 +106,7 @@ export interface RaidInterfaceProps {
   district: FixerDistrict;
   team: PlayerCard[];
   allGameCards: Card[];
-  onEndRaid: (districtId: string, kills: number, earnings: number, stunnedCardIds: string[], killStats: KillStats) => void;
+  onEndRaid: (districtId: string, kills: number, earnings: { eddies: number, dataChips: number }, defeatedCardIds: string[], killStats: KillStats) => void;
 }
 
 export interface CheatMenuProps {

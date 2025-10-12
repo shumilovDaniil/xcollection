@@ -19,6 +19,7 @@ export const RARITY_STYLES: { [key in Rarity]: { bg: string; border: string; tex
 export const INITIAL_PLAYER_CURRENCIES: PlayerCurrencies = {
   eddies: 1000,
   lustGems: 100,
+  dataChips: 0,
 };
 
 // Updated initial cards for a better start with the new Raid mode (focus on attack)

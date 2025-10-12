@@ -170,6 +170,7 @@ export const getPlayerCurrencies = async (): Promise<PlayerCurrencies> => {
                 const result: PlayerCurrencies = {
                     eddies: request.result.eddies || 0,
                     lustGems: request.result.lustGems || 0,
+                    dataChips: request.result.dataChips || 0,
                 };
                 resolve(result);
             } else {

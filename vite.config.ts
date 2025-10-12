@@ -1,26 +1,23 @@
-// vite.config.ts (или .js)
-import path from "path";
-import react from "@vitejs/plugin-react-swc";
-import { defineConfig, loadEnv } from "vite";
+import path from 'path';
+import { defineConfig, loadEnv } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, ".", ""); // читает .env, .env.production и т.п.
-
-  return {
-    base: "/xcollection/",
-
-    plugins: [react()],
-
-    resolve: {
-      alias: {
-        "@": path.resolve(__dirname, "."),
+    const env = loadEnv(mode, '.', '');
+    return {
+      server: {
+        port: 3000,
+        host: '0.0.0.0',
       },
-    },
-
-    // Если хочешь пробросить ключи без префикса VITE_ (не обязателно, но можно):
-    define: {
-      "process.env.API_KEY": JSON.stringify(env.GEMINI_API_KEY),
-      "process.env.GEMINI_API_KEY": JSON.stringify(env.GEMINI_API_KEY),
-    },
-  };
+      plugins: [react()],
+      define: {
+        'process.env.API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+        'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY)
+      },
+      resolve: {
+        alias: {
+          '@': path.resolve(__dirname, '.'),
+        }
+      }
+    };
 });

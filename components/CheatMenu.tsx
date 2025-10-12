@@ -5,6 +5,7 @@ const CheatMenu: React.FC<CheatMenuProps> = ({ onAddCurrency }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [eddiesInput, setEddiesInput] = useState('10000');
     const [gemsInput, setGemsInput] = useState('1000');
+    const [chipsInput, setChipsInput] = useState('500');
     
     const handleAddEddies = () => {
         const amount = parseInt(eddiesInput, 10);
@@ -17,6 +18,13 @@ const CheatMenu: React.FC<CheatMenuProps> = ({ onAddCurrency }) => {
         const amount = parseInt(gemsInput, 10);
         if (!isNaN(amount)) {
             onAddCurrency('lustGems', amount);
+        }
+    };
+
+    const handleAddChips = () => {
+        const amount = parseInt(chipsInput, 10);
+        if (!isNaN(amount)) {
+            onAddCurrency('dataChips', amount);
         }
     };
     
@@ -46,6 +54,10 @@ const CheatMenu: React.FC<CheatMenuProps> = ({ onAddCurrency }) => {
                         <div className="flex items-center space-x-2">
                             <input type="number" value={eddiesInput} onChange={e => setEddiesInput(e.target.value)} className={inputClass} aria-label="Сумма Эдди" />
                             <button onClick={handleAddEddies} className={buttonClass}>+ Эдди</button>
+                        </div>
+                         <div className="flex items-center space-x-2">
+                            <input type="number" value={chipsInput} onChange={e => setChipsInput(e.target.value)} className={inputClass} aria-label="Сумма Чипов" />
+                            <button onClick={handleAddChips} className={buttonClass}>+ Чипы</button>
                         </div>
                         <div className="flex items-center space-x-2">
                             <input type="number" value={gemsInput} onChange={e => setGemsInput(e.target.value)} className={inputClass} aria-label="Сумма Камней" />

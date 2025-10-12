@@ -1,7 +1,7 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Card, Rarity } from '../types';
 import { RARITY_STYLES } from '../constants';
-import { StrengthIcon, HealingIcon, SpecialEffectIcon, AttackRoleIcon, SupportRoleIcon } from './IconComponents';
+import { StrengthIcon, HealingIcon, HealthIcon, SpecialEffectIcon, AttackRoleIcon, SupportRoleIcon } from './IconComponents';
 import { ImageContext } from '../context/ImageContext';
 import Tooltip from './Tooltip';
 
@@ -97,6 +97,11 @@ const CardComponent: React.FC<CardComponentProps> = ({ card, count, onClick, cla
             {card.stats.healing > 0 && 
                 <Tooltip content="Исцеление: Величина здоровья, восстанавливаемого этой картой.">
                     <div className="flex items-center"><HealingIcon className={`text-emerald-400 flex-shrink-0 ${isSmall ? 'w-4 h-4 mr-1' : 'w-5 h-5 mr-1.5'}`}/> {card.stats.healing}</div>
+                </Tooltip>
+            }
+             {card.stats.hp > 0 && 
+                <Tooltip content="Здоровье: Количество урона, которое карта может выдержать.">
+                    <div className="flex items-center"><HealthIcon className={`text-rose-400 flex-shrink-0 ${isSmall ? 'w-4 h-4 mr-1' : 'w-5 h-5 mr-1.5'}`}/> {card.stats.hp}</div>
                 </Tooltip>
             }
         </div>

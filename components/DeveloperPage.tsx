@@ -21,6 +21,7 @@ const NEW_CARD_TEMPLATE: Omit<Card, 'id'> = {
     stats: {
         strength: 10,
         healing: 0,
+        hp: 50, // 10 strength + 40 common bonus
     }
 }
 
@@ -48,7 +49,10 @@ const DeveloperPage: React.FC<DeveloperPageProps> = (props) => {
 
     const newCardTemplate = useMemo((): Card => ({
         ...NEW_CARD_TEMPLATE,
-        id: Math.max(0, ...allCards.map(c => c.id)) + 1
+        id: Math.max(0, ...allCards.map(c => c.id)) + 1,
+        stats: { // Ensure stats are fully defined
+            ...NEW_CARD_TEMPLATE.stats,
+        },
     }), [allCards]);
 
 
@@ -296,14 +300,14 @@ const DeveloperPage: React.FC<DeveloperPageProps> = (props) => {
                     {/* Stats Section */}
                     <div>
                         <label className={labelClass}>Параметры</label>
-                         <div className="grid grid-cols-2 gap-4">
-                            {(['strength', 'healing'] as Array<keyof CardStats>).map(statKey => (
+                         <div className="grid grid-cols-3 gap-4">
+                            {(['strength', 'healing', 'hp'] as Array<keyof CardStats>).map(statKey => (
                                 <div key={statKey}>
-                                    <label htmlFor={`stat-${statKey}`} className="capitalize block text-sm font-medium text-gray-400 mb-1">{statKey === 'strength' ? 'Сила' : 'Исцеление'}</label>
+                                    <label htmlFor={`stat-${statKey}`} className="capitalize block text-sm font-medium text-gray-400 mb-1">{statKey === 'strength' ? 'Сила' : statKey === 'healing' ? 'Исцеление' : 'Здоровье'}</label>
                                     <input 
                                         type="number" 
                                         id={`stat-${statKey}`}
-                                        value={editableCard.stats[statKey]}
+                                        value={editableCard.stats[statKey] || 0}
                                         onChange={e => handleStatChange(statKey, e.target.value)}
                                         className={inputClass}
                                     />
@@ -331,9 +335,24 @@ const DeveloperPage: React.FC<DeveloperPageProps> = (props) => {
             
             <div className="max-w-4xl mx-auto mt-8 bg-[color:var(--brand-panel)] p-6 border border-[color:var(--brand-accent)]/50 space-y-4">
                  <h3 className="text-2xl font-heading text-[color:var(--brand-accent)] text-center mb-4">Игровые Звуки</h3>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {soundUploadSection('Звук удара', 'hitSound')}
                     {soundUploadSection('Звук смерти', 'deathSound')}
+                     <div className="space-y-3 bg-gray-900/50 p-4 border border-[color:var(--brand-accent)]/20">
+                        <h4 className="text-xl font-heading text-[color:var(--brand-accent)]/80 text-center">Звуки Действий</h4>
+                        <div>
+                            <label htmlFor="upload-heal-sound" className="text-xs font-semibold text-gray-400">
+                                Исцеление
+                            </label>
+                            <input
+                                id="upload-heal-sound"
+                                type="file"
+                                accept="audio/*"
+                                className={fileInputClass}
+                                onChange={(e) => handleAudioUpload('healSound1', e.target.files?.[0])}
+                            />
+                        </div>
+                    </div>
                  </div>
             </div>
 
